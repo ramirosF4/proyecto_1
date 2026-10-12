@@ -2,19 +2,23 @@
   "name": "plantilla",
   "version": "1.0.0",
   "description": "plantilla basada en ES",
+  "homepage": "https://ramirosF4.github.io/proyecto_1",
   "license": "MIT",
   "author": "ramiro",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
     "dev": "webpack serve --open",
-    "build2": "babel src -d controller --watch"
+    "build2": "babel src -d controller --watch",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "@babel/cli": "^8.0.4",
     "@babel/core": "^8.0.1",
     "@babel/preset-env": "^8.0.2",
     "babel-loader": "^10.1.1",
+    "gh-pages": "^6.3.0",
     "webpack": "^5.110.2",
     "webpack-cli": "^7.2.3",
     "webpack-dev-server": "^6.0.0"
