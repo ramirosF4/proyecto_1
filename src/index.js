@@ -6,6 +6,7 @@ import './css/main.css';
 import Acciones from "./Acciones.js";
 import { atk_basico, atk_especial, curacion, cargaEnergia} from './Interfaz.js';  
 import {pantalla_carga, msj_error} from './alertas.js';
+import Swal from 'sweetalert2';
 
 const btn_player1 = document.getElementById("btn_player1");
 const btn_player2 = document.getElementById("btn_player2");
@@ -46,12 +47,56 @@ const accionesPersonaje = [
 ]
 
 const desactivar_btns = ()=> {
+    if (jugador1.getVida() <= 0 || jugador2.getVida() <= 0) {
+        btn_py1.forEach(boton => boton.disabled = true);
+        btn_py2.forEach(boton => boton.disabled = true);
+        return; 
+    }
     btn_py1.forEach(boton => {
         boton.disabled = !jugador1.getEsSuTurno(); 
     });
     btn_py2.forEach(boton => {
         boton.disabled = !jugador2.getEsSuTurno();
     });
+}
+const volver_al_menu = () => {
+    document.getElementById("batalla1").classList.add("d-none");
+    document.getElementById("batalla2").classList.add("d-none");
+
+    player1.classList.remove("d-none");
+    player2.classList.remove("d-none");
+    nombres.classList.remove("d-none");
+
+    nombre1.value = "";
+    nombre2.value = "";
+    nombre1.disabled = false;
+    nombre2.disabled = false;
+
+    pj1 = "";
+    pj2 = "";
+    jugador1 = null;
+    jugador2 = null;
+
+    remover_seleccion("danger", ...player1.querySelectorAll("img"));
+    remover_seleccion("primary", ...player2.querySelectorAll("img"));
+}
+const revisar_ganador = () => {
+    if (jugador1.getVida() <= 0 || jugador2.getVida() <= 0) {
+        let nombreGanador = jugador1.getVida() > 0 ? jugador1.getNombre() : jugador2.getNombre();
+        Swal.fire({
+            title: '¡Batalla Terminada!',
+            text: `¡El ganador es ${nombreGanador}! `,
+            icon: 'success', // Sale una palomita verde
+            confirmButtonText: 'Volver a Selección de Personaje',
+            allowOutsideClick: false,
+            background: "#1a1a1a",
+            color: "#fff"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                volver_al_menu(); 
+            }
+        });
+    }
 }
 
 //funcion para iniciar el juego
@@ -67,6 +112,9 @@ const iniciar_juego = () =>{
     document.getElementById("batalla1").classList.remove("d-none");
     document.getElementById("batalla2").classList.remove("d-none"); 
     //mostramos la pantalla de carga antes de iniciar el juego
+    jugador1.setEsSuTurno(true); 
+    barras();                    
+    desactivar_btns();
     pantalla_carga();
 
 }
@@ -169,6 +217,7 @@ btn_player2.addEventListener("click",() =>{
         accionesPersonaje[i](jugador1,jugador2);
         barras();
         desactivar_btns(); 
+        revisar_ganador(); 
     })
 });
 
@@ -178,7 +227,9 @@ btn_player2.addEventListener("click",() =>{
         accionesPersonaje[i](jugador2,jugador1);
         barras()
         desactivar_btns(); 
-        
+        revisar_ganador(); 
     })
 });
+
+
 

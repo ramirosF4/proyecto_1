@@ -12,19 +12,20 @@ const msj_error = (msj) =>{
 const pantalla_carga = () =>{
     Swal.fire({
         title: 'Iniciando juego...',
-        html: '<img src="./public/gif/gifPantallaCarga.gif" alt="Cargando..." style="width: 80%; height: 80%;" class="img-fluid text-center text-dark" > cargando...',
+        html: '<img src="./public/gif/gifPantallaCarga.gif" alt="Cargando..." style="width: 80%; max-width: 300px;" class="img-fluid text-center text-dark" ><br><br>Cargando...',
         showConfirmButton: false,
         allowOutsideClick: false,
         timer: 5000,
         timerProgressBar: true,
-        width: "90%",
-        heightAuto: false,
+        grow: "fullscreen",
         color: "#fff",
-        background: "none",
-        backdrop: 'rgba(0,0,0,0.8)',
-        didOpen: () => {
-            Swal.showLoading();
-        },
+        background: "transparent",
+        backdrop: 'rgba(0,0,0,0.9)' 
+    }).then((result) => {
+
+        if (result.dismiss === Swal.DismissReason.timer) {
+            console.log("Carga terminada, ¡A pelear!");
+        }
     });
 }
 
@@ -95,4 +96,7 @@ const alertCargaEnergia = (jugadorEnTurno)=>{
         timer: 1500
     });
 }
+
+
+
 export {alertAtk_basico, alertAtk_especial, alertCuracion, alertCargaEnergia, pantalla_carga, msj_error};
