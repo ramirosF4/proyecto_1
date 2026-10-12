@@ -5,7 +5,6 @@ class Personaje{
     #energia = 100; 
     #semilla = 2; 
     #personaje = "";  
-    #turno = false; 
     constructor(nombre,personaje){
         this.#nombre = nombre;
         this.#personaje = personaje; 
